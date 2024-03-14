@@ -1,9 +1,13 @@
-import { LoginForm } from './components/LoginForm'
+import { LoginForm } from '@/components/Login/LoginForm';
+import { PublicLayout } from '@/components/PublicLayout';
 
 export default function Login() {
   return (
-    <div className='flex justify-center items-center'>
-      <LoginForm />
-    </div>
-  )
+    <>
+      <PublicLayout />
+      <div className='flex justify-center items-center'>
+        <LoginForm />
+      </div>
+    </>
+  );
 }

@@ -1,37 +1,22 @@
-'use client'
-import { Button } from '@/components/Button'
-import { Input } from '../../../../components/Input'
-import { useRouter } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
-import { BsGithub, BsGoogle } from 'react-icons/bs'
-import { UserAuth } from '@/context/AuthContext'
+'use client';
+import { Button } from '@/components/Button';
+import { Input } from '../../Input';
+import { useCallback, useEffect, useState } from 'react';
+import { BsGithub, BsGoogle } from 'react-icons/bs';
+import { UserAuth } from '@/context/AuthContext';
 
-import { type FieldValues, useForm, type SubmitHandler } from 'react-hook-form'
-import { AuthSocialButton } from '../AuthSocialButton'
-import toast from 'react-hot-toast'
-import clsx from 'clsx'
-import UseAuth from '@/hooks/useAuth'
+import { type FieldValues, useForm, type SubmitHandler } from 'react-hook-form';
+import { AuthSocialButton } from '../AuthSocialButton';
+import clsx from 'clsx';
+import UseAuth from '@/hooks/useAuth';
 
-export type Variant = 'LOGIN' | 'REGISTER'
-export type AuthError =
-  | 'auth/invalid-email'
-  | 'auth/weak-password'
-  | 'auth/email-already-in-use'
-export type ErrorMessage = {
-  [key in AuthError]: string
-}
+export type Variant = 'LOGIN' | 'REGISTER';
 
 export const LoginForm = () => {
-  const router = useRouter()
-  const [variant, setVariant] = useState<Variant>('LOGIN')
-  const {
-    googleSignIn,
-    githubSignIn,
-    signUpNewUser,
-    loadingAuth,
-    setLoadingAuth,
-    signInWithCredentials,
-  } = UserAuth()
+  const [variant, setVariant] = useState<Variant>('LOGIN');
+  const { loadingAuth } = UserAuth();
+  const { handleSignInProvider, handleSignUp, handleCredentialsSignIn } =
+    UseAuth();
 
   const {
     register,
@@ -45,7 +30,7 @@ export const LoginForm = () => {
       signUpEmail: '',
       signUpPassword: '',
     },
-  })
+  });
 
   useEffect(() => {
     reset({
@@ -53,126 +38,27 @@ export const LoginForm = () => {
       password: '',
       signUpEmail: '',
       signUpPassword: '',
-    })
-  }, [reset, variant])
+    });
+  }, [reset, variant]);
 
   const toggleVariants = useCallback(() => {
-    variant === 'LOGIN' ? setVariant('REGISTER') : setVariant('LOGIN')
-  }, [variant])
-
-  const handleSignIn = async (social: string) => {
-    if (social === 'google') {
-      try {
-        await googleSignIn()
-        router.replace('/main/chat')
-      } catch (error: any) {
-        toast(error?.code, {
-          icon: '❌',
-          style: {
-            borderRadius: '6px',
-            background: 'rgba(107, 114, 128)',
-            color: '#dce0e6',
-          },
-          position: 'bottom-left',
-        })
-      } finally {
-        setLoadingAuth(false)
-      }
-    }
-
-    if (social === 'github') {
-      try {
-        await githubSignIn()
-        router.replace('/main/chat')
-      } catch (error: any) {
-        toast(error?.code, {
-          icon: '❌',
-          style: {
-            borderRadius: '6px',
-            background: 'rgba(107, 114, 128)',
-            color: '#dce0e6',
-          },
-          position: 'bottom-left',
-        })
-      } finally {
-        setLoadingAuth(false)
-      }
-    }
-  }
-
-  const handleSignUp = async (email: string, password: string) => {
-    try {
-      await signUpNewUser(email, password)
-      toast('Successfully registered!', {
-        icon: '✅',
-        style: {
-          borderRadius: '6px',
-          background: 'rgba(107, 114, 128)',
-          color: '#dce0e6',
-        },
-        position: 'bottom-left',
-      })
-      setVariant('LOGIN')
-    } catch (error: any) {
-      const errorsHandlers: ErrorMessage = {
-        'auth/invalid-email': 'Should use a valid email',
-        'auth/weak-password': 'Password should be at least 6 characters',
-        'auth/email-already-in-use': 'Email already in use',
-      }
-      const errorCode = error.code as AuthError
-      const errorMessage = errorsHandlers[errorCode] || 'An error occurred'
-      toast(errorMessage, {
-        icon: '❌',
-        style: {
-          borderRadius: '6px',
-          background: 'rgba(107, 114, 128)',
-          color: '#dce0e6',
-        },
-        position: 'bottom-left',
-      })
-    } finally {
-      setLoadingAuth(false)
-    }
-  }
-
-  const handleCredentialsSignIn = async (email: string, password: string) => {
-    try {
-      await signInWithCredentials(email, password)
-      toast('Welcome!', {
-        icon: '✅',
-        style: {
-          borderRadius: '6px',
-          background: 'rgba(107, 114, 128)',
-          color: '#dce0e6',
-        },
-        position: 'bottom-left',
-      })
-      router.replace('/main/chat')
-    } catch {
-      toast('Invalid email and/or password', {
-        icon: '❌',
-        style: {
-          borderRadius: '6px',
-          background: 'rgba(107, 114, 128)',
-          color: '#dce0e6',
-        },
-        position: 'bottom-left',
-      })
-    } finally {
-      setLoadingAuth(false)
-    }
-  }
+    variant === 'LOGIN' ? setVariant('REGISTER') : setVariant('LOGIN');
+  }, [variant]);
 
   const onSubmit: SubmitHandler<FieldValues> = async (formData) => {
     if (variant === 'REGISTER') {
-      await handleSignUp(formData.signUpEmail, formData.signUpPassword)
+      await handleSignUp(
+        formData.signUpEmail,
+        formData.signUpPassword,
+        setVariant
+      );
     }
 
-    await handleCredentialsSignIn(formData.email, formData.password)
-  }
+    await handleCredentialsSignIn(formData.email, formData.password);
+  };
 
   return (
-    <div className='w-[95%] mt-12 md:mt-32 sm:w-1/2 md:w-[40%] lg:w-[400px] sm:ring-1 sm:ring-inset sm:ring-gray-500 p-8 rounded-lg'>
+    <div className='w-[95%] mt-12 md:mt-12 lg:mt-32 sm:w-1/2 md:w-[40%] lg:w-[400px] sm:ring-1 sm:ring-inset sm:ring-gray-500 p-8 rounded-lg'>
       <h1 className='text-2xl text-center mb-6'>
         {variant === 'LOGIN' ? 'Sign in to Chat in Time!' : 'Register'}
       </h1>
@@ -277,11 +163,11 @@ export const LoginForm = () => {
         <div className='mt-6 flex gap-2'>
           <AuthSocialButton
             icon={BsGoogle}
-            onClick={() => handleSignIn('google')}
+            onClick={() => handleSignInProvider('google')}
           />
           <AuthSocialButton
             icon={BsGithub}
-            onClick={() => handleSignIn('github')}
+            onClick={() => handleSignInProvider('github')}
           />
         </div>
         <div className='flex gap-2 justify-center text-xs mt-6 px-2'>
@@ -296,5 +182,5 @@ export const LoginForm = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};

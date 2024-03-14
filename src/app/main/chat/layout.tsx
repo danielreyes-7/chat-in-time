@@ -1,15 +1,14 @@
-import { Sidebar } from '../components/Sidebar'
+import { Sidebar } from '@/components/Sidebar';
 
 export default function ChatLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <div className='flex'>
       <Sidebar />
-      <section className='w-full'>{children}</section>
+      <section className='w-full md:w-[60%] mx-auto'>{children}</section>
     </div>
-  )
+  );
 }
-

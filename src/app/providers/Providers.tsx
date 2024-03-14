@@ -1,5 +1,5 @@
-import { AuthContextProvider } from '../../context/AuthContext'
-import { ToasterContext } from '../../context/ToasterContext'
+import { AuthContextProvider } from '../../context/AuthContext';
+import { ToasterContext } from '../../context/ToasterContext';
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
@@ -7,5 +7,5 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       <ToasterContext />
       {children}
     </AuthContextProvider>
-  )
+  );
 }

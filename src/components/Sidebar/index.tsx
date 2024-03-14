@@ -1,18 +1,18 @@
-'use client'
-import { UserAuth } from '@/context/AuthContext'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import toast from 'react-hot-toast'
-import { MdLogout, MdArrowBack } from 'react-icons/md'
+'use client';
+import { UserAuth } from '@/context/AuthContext';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { MdLogout, MdArrowBack } from 'react-icons/md';
 export const Sidebar = () => {
-  const [collapse, setCollapse] = useState<boolean>(false)
-  const router = useRouter()
-  const { setLoadingAuth, logOut } = UserAuth()
+  const [collapse, setCollapse] = useState<boolean>(false);
+  const router = useRouter();
+  const { setLoadingAuth, logOut } = UserAuth();
 
   const handleSignOut = async () => {
     try {
-      await logOut()
-      router.replace('/')
+      await logOut();
+      router.replace('/');
     } catch (error: any) {
       toast(error?.code, {
         icon: '❌',
@@ -22,16 +22,16 @@ export const Sidebar = () => {
           color: '#dce0e6',
         },
         position: 'bottom-left',
-      })
+      });
     } finally {
-      setLoadingAuth(false)
+      setLoadingAuth(false);
     }
-  }
+  };
 
   return (
     <aside
       className={`relative min-h-screen rounded-e-xl border-r border-gray-500 shadow-[18px_0_40px_1px] shadow-zinc-700 ${
-        collapse ? 'w-16 p-1' : 'p-6 w-72 lg:w-80'
+        collapse ? 'w-16 p-1' : 'p-6 w-72'
       } flex flex-col duration-300`}
     >
       <h1 className={`${collapse && 'scale-0'} duration-300`}>Sidebar</h1>
@@ -57,6 +57,5 @@ export const Sidebar = () => {
         </div>
       </footer>
     </aside>
-  )
-}
-
+  );
+};
