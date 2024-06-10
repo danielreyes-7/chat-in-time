@@ -1,17 +1,18 @@
-'use client'
-import { FC, type ReactNode } from 'react'
+'use client';
+import { FC, type ReactNode } from 'react';
 
-import clsx from 'clsx'
+import clsx from 'clsx';
 
-type ButtonVariants = 'default' | 'secondary' | 'danger'
+type ButtonVariants = 'default' | 'secondary' | 'danger';
 
 interface ButtonProps {
-  type?: 'button' | 'submit' | 'reset' | undefined
-  fullWidth?: boolean
-  children?: ReactNode
-  onClick?: () => void
-  variant?: ButtonVariants
-  disabled?: boolean
+  type?: 'button' | 'submit' | 'reset' | undefined;
+  fullWidth?: boolean;
+  children?: ReactNode;
+  onClick?: () => void;
+  variant?: ButtonVariants;
+  disabled?: boolean;
+  className?: string;
 }
 
 export const Button: FC<ButtonProps> = ({
@@ -21,6 +22,7 @@ export const Button: FC<ButtonProps> = ({
   onClick,
   variant = 'default',
   disabled,
+  className,
 }) => {
   return (
     <button
@@ -32,9 +34,9 @@ export const Button: FC<ButtonProps> = ({
       flex
       justify-center
       rounded-md
-      px-3
+      px-5
       py-2
-      h-8
+      h-auto
       text-sm
       text-gray-200
       font-semibold
@@ -42,6 +44,7 @@ export const Button: FC<ButtonProps> = ({
       focus-visible:outline-2
       focus-visible:outline-offset-2
       `,
+        className,
         disabled && 'opacity-50 cursor-not-allowed',
         fullWidth && 'w-full',
         variant === 'secondary' &&
@@ -49,10 +52,10 @@ export const Button: FC<ButtonProps> = ({
         variant === 'danger' &&
           'bg-rose-500 transition-all duration-500 hover:bg-rose-600 focus-visible:outline-rose-600',
         variant === 'default' &&
-          'text-zinc-900 bg-gray-500 transition-all duration-500 hover:bg-gray-400 focus-visible:outline-gray-400'
+          'text-gray-300 bg-zinc-700 transition-all duration-500 hover:bg-zinc-800/80 focus-visible:outline-gray-400'
       )}
     >
       {children}
     </button>
-  )
-}
+  );
+};

@@ -58,7 +58,7 @@ export const LoginForm = () => {
   };
 
   return (
-    <div className='w-[95%] mt-12 md:mt-12 lg:mt-32 sm:w-1/2 md:w-[40%] lg:w-[400px] sm:ring-1 sm:ring-inset sm:ring-gray-500 p-8 rounded-lg'>
+    <div className='w-[95%] mt-12 md:mt-20 lg:mt-32 sm:w-1/2 md:w-[40%] lg:w-[400px] sm:ring-1 sm:ring-inset sm:ring-gray-500 p-8 rounded-lg'>
       <h1 className='text-2xl text-center mb-6'>
         {variant === 'LOGIN' ? 'Sign in to Chat in Time!' : 'Register'}
       </h1>
@@ -67,6 +67,7 @@ export const LoginForm = () => {
           <>
             <Input
               id='email'
+              className='mt-2'
               label='Email'
               register={register}
               errors={errors}
@@ -86,6 +87,7 @@ export const LoginForm = () => {
             />
             <Input
               id='password'
+              className='mt-2'
               label='Password'
               register={register}
               errors={errors}
@@ -108,6 +110,7 @@ export const LoginForm = () => {
           <>
             <Input
               id='signUpEmail'
+              className='mt-2'
               label='Email'
               register={register}
               errors={errors}
@@ -126,6 +129,7 @@ export const LoginForm = () => {
             />
             <Input
               id='signUpPassword'
+              className='mt-2'
               label='Password'
               register={register}
               errors={errors}

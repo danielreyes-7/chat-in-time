@@ -1,19 +1,22 @@
-'use client'
-import { FC, useState } from 'react'
-import { FaEye, FaEyeSlash } from 'react-icons/fa6'
-import clsx from 'clsx'
+'use client';
+import { FC, useState } from 'react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa6';
+import clsx from 'clsx';
 
-import { type FieldValues, type UseFormRegister } from 'react-hook-form'
+import { type FieldValues, type UseFormRegister } from 'react-hook-form';
 
 interface InputProps {
-  label: string
-  id: string
-  type?: string
-  required?: any
-  register: UseFormRegister<FieldValues>
-  errors: any
-  disabled?: boolean
-  isPassword?: boolean
+  label?: string;
+  id: string;
+  type?: string;
+  required?: any;
+  register: UseFormRegister<FieldValues>;
+  errors?: any;
+  disabled?: boolean;
+  isPassword?: boolean;
+  placeholder?: string;
+  className?: string;
+  autoComplete?: string;
 }
 
 export const Input: FC<InputProps> = ({
@@ -25,28 +28,33 @@ export const Input: FC<InputProps> = ({
   errors,
   disabled,
   isPassword,
+  placeholder = '',
+  className,
+  autoComplete,
 }) => {
-  const [watchPassword, setWatchPassword] = useState<boolean>(false)
+  const [watchPassword, setWatchPassword] = useState<boolean>(false);
 
   return (
-    <div className='flex flex-col'>
-      <label className='block text-sm font-medium leading-6' htmlFor={id}>
-        {label}
-      </label>
+    <div className='flex flex-col w-full'>
+      {label && (
+        <label className='block text-sm font-medium leading-6' htmlFor={id}>
+          {label}
+        </label>
+      )}
       <div className='flex'>
         <input
           id={id}
           type={isPassword && watchPassword ? 'text' : type}
-          autoComplete={id}
+          autoComplete={autoComplete ?? id}
           disabled={disabled}
+          placeholder={placeholder}
           {...register(id, { ...required })}
           className={clsx(
             `form-input
           tracking-widest
-          w-full       
+          w-full
           rounded-md
           border-0
-          mt-2
           py-3
           shadow-sm
           ring-1
@@ -61,8 +69,9 @@ export const Input: FC<InputProps> = ({
           focus:outline-0          
           sm:text-sm
           sm:leading-6`,
+            className && className,
             isPassword && 'w-[90%] rounded-e-none',
-            errors[id]
+            errors && errors[id]
               ? 'ring-rose-500 focus:ring-rose-500'
               : ' focus:ring-teal-700',
             disabled && 'opacity-50 cursor-not-allowed'
@@ -79,10 +88,15 @@ export const Input: FC<InputProps> = ({
           )}
         </>
       </div>
-      {errors[id] && (
-        <p className='text-rose-500 text-[12px] mt-1'>{errors[id]?.message}</p>
+      {errors ? (
+        errors[id] && (
+          <p className='text-rose-500 text-[12px] mt-1'>
+            {errors[id]?.message}
+          </p>
+        )
+      ) : (
+        <></>
       )}
     </div>
-  )
-}
-
+  );
+};

@@ -1,9 +1,11 @@
 'use client';
+
 import { UserAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { MdLogout, MdArrowBack } from 'react-icons/md';
+
 export const Sidebar = () => {
   const [collapse, setCollapse] = useState<boolean>(false);
   const router = useRouter();
@@ -28,13 +30,33 @@ export const Sidebar = () => {
     }
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (typeof window !== 'undefined') {
+        if (window.innerWidth <= 993) {
+          setCollapse(true);
+        } else {
+          setCollapse(false);
+        }
+      }
+    };
+
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <aside
-      className={`relative min-h-screen rounded-e-xl border-r border-gray-500 shadow-[18px_0_40px_1px] shadow-zinc-700 ${
+      className={`relative min-h-screen rounded-e-xl border-r border-gray-500 shadow-[4px_0_36px_1px] shadow-zinc-700 ${
         collapse ? 'w-16 p-1' : 'p-6 w-72'
       } flex flex-col duration-300`}
     >
-      <h1 className={`${collapse && 'scale-0'} duration-300`}>Sidebar</h1>
+      <h1 className={`${collapse && 'scale-0'} duration-300`}>My ChatInTime</h1>
       <div
         className={`cursor-pointer absolute top-9 -right-3 bg-zinc-900 hover:bg-zinc-900/80 ring-1 ring-inset ring-gray-500 shadow-[0_0_10px_0] shadow-zinc-700 p-1 rounded-full ${
           collapse && 'rotate-180'
